@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nullTempus (nullTempus)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <div id="toast-container"></div>
+
+    <div class="glass-panel main-container">
+        <header>
+            <h1 class="glow-text">nullTempus</h1>
+        </header>
+
+        <!-- Auth Section -->
+        <section id="auth-section" class="active-section">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchAuthTab('login')">Fazer Autenticação (Login)</button>
+                <button class="tab-btn" onclick="switchAuthTab('register')">Cadastrar Usuário</button>
+                <button class="tab-btn" onclick="switchAuthTab('explorer')">Explorer (Ver Rede Pública)</button>
+            </div>
+
+            <div id="login-form" class="auth-box">
+                <input type="text" id="login-user" placeholder="Nome de Usuário" autocomplete="off">
+                <input type="password" id="login-pass" placeholder="Senha do Sistema">
+                <input type="text" id="login-totp" placeholder="Código Authenticator - TOTP)" maxlength="6">
+                <button class="btn-primary" onclick="login()">Acessar Rede nT</button>
+            </div>
+
+            <div id="register-form" class="auth-box hidden">
+                <input type="text" id="reg-user" placeholder="Novo Usuário" autocomplete="off">
+                <input type="password" id="reg-pass" placeholder="Definir Senha Forte">
+                <button class="btn-secondary" onclick="register()">Registrar</button>
+
+                <div id="qr-result" class="hidden">
+                    <p>Faça a leitura deste TOTP com seu Authenticator:</p>
+                    <img id="qr-image" src="" alt="QR Code" title="Escaneie!">
+                    <p class="code-text" id="manual-code"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="hidden">
+            <div class="dashboard-header">
+                <h2>Conectado como <span id="logged-user" class="highlight"></span></h2>
+                <button class="btn-danger" onclick="logout()">Desconectar-se</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Action Tools -->
+                <div class="dashboard-card">
+                    <h3>INSERIR NOVA TRANSAÇÃO NA REDE</h3>
+
+                    <div class="field-group">
+                        <label class="field-label" for="block-data">>_ Carga Secreta (Dados que sofrerão
+                            criptografia):</label>
+                        <input type="text" id="block-data" placeholder="Digite a informação a ser protegida (AES-256)">
+                    </div>
+
+                    <div style="display:flex; gap: 1rem">
+                        <div class="field-group" style="width: 50%;">
+                            <label class="field-label" for="block-type">>_ Categoria:</label>
+                            <input type="text" id="block-type" placeholder="Ex: padrao">
+                        </div>
+
+                        <div class="field-group" style="width: 50%;">
+                            <label class="field-label" for="block-exp">>_ Expiração (Min):</label>
+                            <input type="number" id="block-exp" placeholder="0 = Vida útil infinita" value="0">
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="addBlock()" style="margin-top: 5px;">[EXECUTAR] Assinar &
+                        Forjar Bloco</button>
+                </div>
+
+                <!-- Simulation Tools -->
+                <div class="dashboard-card threat-card">
+                    <h3>Simulador de Ameaças (Teste)</h3>
+                    <p class="small-text">Emula o acesso físico de um Hacker corrompendo o arquivo JSON no HD para
+                        testar a detecção imediata matemática da Chain.</p>
+                    <button class="btn-danger-outline" onclick="simulateAttack()">Injetar Adulteração Física</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Public Network Explorer -->
+        <section id="explorer-section" class="hidden">
+            <div class="chain-viewer">
+                <div class="chain-header">
+                    <h3>[ >> ] Rede Pública nullTempus (Explorer)</h3>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="chain-search" placeholder="Buscar índice, Hash ou @dono..." onkeyup="filterChain()" style="padding: 6px 10px; width: 250px; font-size: 0.8rem; box-shadow: none;">
+                        <button class="btn-secondary" onclick="fetchChain()"
+                            style="padding: 6px 15px; font-size: 0.8rem; box-shadow: 2px 2px 0 var(--black);">[Atualizar/Sincronizar Blocks]</button>
+                    </div>
+                </div>
+                <div id="chain-container" class="chain-list">
+                    <!-- Blocks dynamically appended -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

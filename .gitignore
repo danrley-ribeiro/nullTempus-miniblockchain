@@ -1,0 +1,31 @@
+# Cache e compilados do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Diretórios de Ambiente Virtual
+venv/
+env/
+.env
+.venv
+
+# Banco de Dados, Logs e QR Codes gerados dinamicamente em tempo de execução
+data/
+*.log
+*_qrcode.png
+
+# Configurações de IDE e sistema
+.vscode/
+.idea/
+.DS_Store
+
+# (Opcional) Ignore roteiros de testes isolados alheios ao core, caso não queira subir
+validate.py
+extract_pdf.py
+INE5680-20261-MiniBlockchain.pdf
+javacryptotoolsandtech-1.pdf
+/exemplos/
+
+pdf_content.txt
+test.txt
+plano_mini_blockchain_seguro.md
