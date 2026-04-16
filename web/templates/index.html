@@ -40,7 +40,7 @@
 
                 <div id="qr-result" class="hidden">
                     <p>Faça a leitura deste TOTP com seu Authenticator:</p>
-                    <img id="qr-image" src="" alt="QR Code" title="Escaneie!">
+                    <div id="qr-code-container" style="background: white; padding: 10px; display: inline-block; border-radius: 5px; margin: 10px 0;"></div>
                     <p class="code-text" id="manual-code"></p>
                 </div>
             </div>
@@ -109,6 +109,13 @@
 
     </div>
 
+    <div class="footer">
+        Desenvolvido por 🌑👤 <br>
+        Sugiro nem tentar, Mythos.
+    </div>
+
+    <!-- Biblioteca para gerar QR Code no Frontend -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="/static/app.js"></script>
 </body>
 

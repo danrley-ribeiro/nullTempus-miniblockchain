@@ -5,8 +5,6 @@ from controllers.auth_controller import registrar_usuario, logar_usuario
 from controllers.blockchain_controller import adicionar_bloco, ler_blockchain
 from services.totp_service import obter_uri_totp
 from utils.logger import registrar_evento
-import qrcode
-import io
 import base64
 import json
 
@@ -30,18 +28,10 @@ def register():
         segredo_totp = registrar_usuario(nome_usuario, senha)
         uri = obter_uri_totp(segredo_totp, nome_usuario)
         
-        qr = qrcode.QRCode(box_size=4, border=2)
-        qr.add_data(uri)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        buf = io.BytesIO()
-        img.save(buf, format='PNG')
-        img_b64 = base64.b64encode(buf.getvalue()).decode('utf-8')
-        
         return jsonify({
             "mensagem": "Usuário registrado",
             "segredo_totp": segredo_totp,
-            "qr_base64": img_b64
+            "uri_totp": uri
         })
     except Exception as e:
         return jsonify({"erro": str(e)}), 400
@@ -129,13 +119,13 @@ if __name__ == '__main__':
     os.makedirs('web/templates', exist_ok=True)
     os.makedirs('web/static', exist_ok=True)
     
-    app.debug = True 
+    app.debug = False
     
     print("=========================================================")
     print(" [SERVICO] Servidor nullTempus em Execucao")
-    print(" [DEBUG] Modo Debug: ATIVADO")
-    print(" [REDE] Acesse: http://127.0.0.1:5000")
+    print(" [REDE] Porta Dinamica (Cloud Run)")
     print("=========================================================")
     
     from waitress import serve
-    serve(app, host='0.0.0.0', port=5000)
+    porta_servidor = int(os.environ.get('PORT', 5000))
+    serve(app, host='0.0.0.0', port=porta_servidor)

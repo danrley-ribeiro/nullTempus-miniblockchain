@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
 let chaveSessao = localStorage.getItem('nt_session');
 let usuarioLogado = localStorage.getItem('nt_user');
@@ -58,7 +58,19 @@ async function register() {
 
         if (target.ok) {
             document.getElementById('qr-result').classList.remove('hidden');
-            document.getElementById('qr-image').src = "data:image/png;base64," + res.qr_base64;
+            
+            // Limpa o container e gera o QR Code no Frontend
+            const qrContainer = document.getElementById('qr-code-container');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: res.uri_totp,
+                width: 128,
+                height: 128,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
             document.getElementById('manual-code').innerText = res.segredo_totp;
             showToast("Chaves Geradas! Escaneie seu Auth Code para habilitar 2FA.");
         } else throw new Error(res.erro || res.error);

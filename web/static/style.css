@@ -16,10 +16,11 @@ body {
     color: var(--hacker-green);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     padding: 2rem;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .main-container {
@@ -143,3 +144,15 @@ button {
 /* Form Fields Complement */
 .field-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .field-label { font-size: 0.85rem; font-weight: 700; color: var(--hacker-dark-green); text-transform: uppercase; margin-left: 2px;}
+
+.footer {
+    text-align: center;
+    margin-top: auto;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    font-size: 0.9rem;
+    color: var(--hacker-dark-green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
