@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nullTempus (nullTempus)</title>
+    <title>nullTempus</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" href="data:,">
@@ -23,7 +23,7 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchAuthTab('login')">Fazer Autenticação (Login)</button>
                 <button class="tab-btn" onclick="switchAuthTab('register')">Cadastrar Usuário</button>
-                <button class="tab-btn" onclick="switchAuthTab('explorer')">Explorer (Ver Rede Pública)</button>
+                <button class="tab-btn" onclick="switchAuthTab('explorer')">Explorer (Ver Rede nT)</button>
             </div>
 
             <div id="login-form" class="auth-box">
@@ -94,7 +94,7 @@
         <section id="explorer-section" class="hidden">
             <div class="chain-viewer">
                 <div class="chain-header">
-                    <h3>[ >> ] Rede Pública nullTempus (Explorer)</h3>
+                    <h3>[ >> ] Rede nullTempus (Explorer)</h3>
                     <div style="display:flex; gap:10px;">
                         <input type="text" id="chain-search" placeholder="Buscar índice, Hash ou @dono..." onkeyup="filterChain()" style="padding: 6px 10px; width: 250px; font-size: 0.8rem; box-shadow: none;">
                         <button class="btn-secondary" onclick="fetchChain()"
