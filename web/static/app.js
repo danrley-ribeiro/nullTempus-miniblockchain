@@ -213,15 +213,7 @@ async function addBlock() {
     } catch (e) { showToast(e.message, true); }
 }
 
-async function simulateAttack() {
-    try {
-        const res = await fetch(`${API_URL}/simulate`, { method: 'POST' });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.erro || data.error);
-        showToast("Aviso: " + data.mensagem, true);
-        fetchChain();
-    } catch (e) { showToast(e.message, true); }
-}
+
 
 function updateClock() {
     const now = new Date();

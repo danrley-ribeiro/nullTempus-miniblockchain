@@ -60,7 +60,7 @@ def menu_usuario(nome_usuario: str, sessao: dict):
         print("1. Adicionar Bloco (Transação)")
         print("2. Ler Blockchain")
         print("3. Realizar Logout")
-        print("4. [Teste] Simular Adulteração da Blockchain")
+
         escolha = prompt_string("Escolha uma opção")
         
         if escolha == "1":
@@ -98,28 +98,7 @@ def menu_usuario(nome_usuario: str, sessao: dict):
             destruir_sessao(sessao)
             print("Sessão finalizada com segurança. Voltando ao menu principal...")
             break
-        elif escolha == "4":
-            print("\n--- TESTE DE ADULTERAÇÃO (MANIPULAÇÃO DE CONTEÚDO) ---")
-            try:
-                import json
-                caminho_arquivo = "data/blockchain.json"
-                with open(caminho_arquivo, "r") as f:
-                    dados = json.load(f)
-                
-                if len(dados) > 1:
-                    print("Modificando maliciosamente os dados do bloco 1 diretamente no json...")
-                    dados[1]["proprietario"] = "hacker_injetado"
-                    with open(caminho_arquivo, "w") as f:
-                        json.dump(dados, f)
-                    
-                    print("Tentando ler blockchain após ataque...")
-                    from controllers.blockchain_controller import ler_blockchain
-                    ler_blockchain(sessao["chave_sessao"], nome_usuario)
-                    print("[FALHA] O bloco passou em branco...")
-                else:
-                    print("É necessário adicionar pelo menos 1 bloco na rede antes de testar a invasão.")
-            except Exception as e:
-                print(f"[BLOQUEADO] Adulteração confirmada: {e}")
+
                 
         else:
             print("Opção inválida.")

@@ -96,23 +96,7 @@ def create_block():
     except Exception as e:
         return jsonify({"erro": str(e)}), 400
 
-@app.route('/api/simulate', methods=['POST'])
-def simulate():
-    try:
-        caminho_arquivo = "data/blockchain.json"
-        with open(caminho_arquivo, "r") as f:
-            dados = json.load(f)
-        
-        if len(dados) > 1:
-            dados[1]["proprietario"] = "hacker_injetado"
-            with open(caminho_arquivo, "w") as f:
-                json.dump(dados, f)
-            registrar_evento("ATTACK_SIMULATED", "hacker", "Usuário acionou script para mudar o JSON")
-            return jsonify({"mensagem": "Ataque físico realizado! Tente Ler a Blockchain."})
-        else:
-            return jsonify({"erro": "Adicione 1 bloco antes."}), 400
-    except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+
 
 if __name__ == '__main__':
     os.makedirs('data', exist_ok=True)

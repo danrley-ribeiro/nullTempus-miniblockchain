@@ -219,10 +219,7 @@ button {
 }
 .dashboard-card h3 { color: var(--hacker-green); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--hacker-dark-green); padding-bottom: 5px;}
 
-.threat-card { border-color: rgba(255, 0, 60, 0.4); }
-.threat-card:hover { border-color: var(--danger); box-shadow: inset 0 0 15px var(--danger-dim); }
-.threat-card h3 { color: var(--danger); border-bottom-color: rgba(255, 0, 60, 0.4); }
-.small-text { font-size: 0.9rem; color: var(--hacker-dark-green); }
+
 
 /* Chain list */
 .chain-viewer { background: transparent; padding: 2rem; border: var(--border-width) solid var(--hacker-dark-green); }
