@@ -12,10 +12,15 @@
 
 <body>
     <div id="toast-container"></div>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+
 
     <div class="glass-panel main-container">
         <header>
             <h1 class="glow-text">nullTempus</h1>
+            <div id="system-clock" class="system-clock"></div>
+
         </header>
 
         <!-- Auth Section -->
@@ -95,10 +100,9 @@
             <div class="chain-viewer">
                 <div class="chain-header">
                     <h3>[ >> ] Rede nullTempus (Explorer)</h3>
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" id="chain-search" placeholder="Buscar índice, Hash ou @dono..." onkeyup="filterChain()" style="padding: 6px 10px; width: 250px; font-size: 0.8rem; box-shadow: none;">
-                        <button class="btn-secondary" onclick="fetchChain()"
-                            style="padding: 6px 15px; font-size: 0.8rem; box-shadow: 2px 2px 0 var(--black);">[Atualizar/Sincronizar Blocks]</button>
+                    <div class="search-group" style="display: flex; flex-direction: column;">
+                        <input type="text" id="chain-search" placeholder="Buscar índice, Hash ou @dono..." onkeyup="filterChain()">
+                        <button class="btn-refresh" onclick="fetchChain()">[Atualizar/Sincronizar Blocks]</button>
                     </div>
                 </div>
                 <div id="chain-container" class="chain-list">
@@ -109,10 +113,10 @@
 
     </div>
 
-    <div class="footer">
-        Desenvolvido por 🌑👤 <br>
-        Sugiro nem tentar, Mythos.
-    </div>
+        <div class="footer">
+            Desenvolvido por 🌑👤 <br>
+            <span class="footer-msg">Carregando protocolos...</span>
+        </div>
 
     <!-- Biblioteca para gerar QR Code no Frontend -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
