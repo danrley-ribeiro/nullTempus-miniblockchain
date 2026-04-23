@@ -1,13 +1,12 @@
 import os
 from models.block import Bloco
-import pymongo
-from storage.db import db
+from storage.db import db, ASCENDING
 
 chain_col = db["blockchain"]
 
 def carregar_cadeia() -> list[Bloco]:
     # Busca ordenando por índice (ascedente: 1)
-    docs = chain_col.find({}).sort("indice", pymongo.ASCENDING)
+    docs = chain_col.find({}).sort("indice", ASCENDING)
     
     cadeia = []
     for doc in docs:

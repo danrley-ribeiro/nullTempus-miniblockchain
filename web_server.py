@@ -107,9 +107,9 @@ if __name__ == '__main__':
     
     print("=========================================================")
     print(" [SERVICO] Servidor nullTempus em Execucao")
-    print(" [REDE] Porta Dinamica (Cloud Run)")
+    print(" [REDE] 0.0.0.0:5001")
     print("=========================================================")
     
     from waitress import serve
-    porta_servidor = int(os.environ.get('PORT', 5000))
+    porta_servidor = int(os.environ.get('PORT', 5001))
     serve(app, host='0.0.0.0', port=porta_servidor)

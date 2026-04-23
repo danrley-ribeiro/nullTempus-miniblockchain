@@ -30,7 +30,9 @@ Diferente de escopos rasos, a aplicação abandona o uso de arquivos estáticos 
    ```
 
 3. **Configure o Banco de Dados (.env)**:
-   A integração remota utiliza o MongoDB como repositório. Um arquivo `.env` na raiz do sistema já se encontra estruturado contendo a variável `MONGO_URI`.
+   A integração remota utiliza o MongoDB como repositório padrão. No entanto, o projeto suporta execução **Local Offline**:
+   - **Modo Nuvem**: Preencha `MONGO_URI` no seu arquivo `.env`.
+   - **Modo Local (JSON)**: Deixe a `MONGO_URI` vazia ou defina `LOCAL_DB=true` no `.env`. Os dados serão salvos automaticamente na pasta `data/`.
 
 4. **Inicialize o Servidor Web de Produção**:
    ```bash
@@ -38,7 +40,7 @@ Diferente de escopos rasos, a aplicação abandona o uso de arquivos estáticos 
    ```
 
 5. **Acesse a Aplicação**:
-   Abra seu navegador em: **`http://127.0.0.1:5000`**
+   Abra seu navegador em: **`http://127.0.0.1:5001`**
 
 ### Validando os Testes Acadêmicos:
 Ao invés de menus em preto e branco no console, todo o fluxo está imerso na web:
