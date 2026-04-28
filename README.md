@@ -44,9 +44,9 @@ Diferente de escopos rasos, a aplicação abandona o uso de arquivos estáticos 
 
 ### Validando os Testes Acadêmicos:
 Ao invés de menus em preto e branco no console, todo o fluxo está imerso na web:
-- Acesse a aba "Criar Cofre" e gere um novo usuário. A interface apresentará um QR Code para ser escaneado via *Google Authenticator* / *Authy*.
-- Troque para a aba de "Painel de Acesso", realize o login usando a mesclagem da Senha em texto com o código OTP gerado no relógio do seu smartphone.
-- Insira blocos de dados. O servidor construirá os enlaces criptográficos AES de forma transparente usando envolórios de chaves, mandando para o MongoDB.
+- Acesse a aba "Criar Cofre" e gere um novo usuário adicionando um nome de usuário e uma senha (Mínimo de 7 caracteres). A interface apresentará um QR Code para ser escaneado via *Google Authenticator* / *Authy*.
+- Troque para a aba de "Painel de Acesso", realize o login usando a mesclagem da Senha em texto com o código OTP gerado no autenticador do seu smartphone.
+- Insira blocos de dados. Digite qualquer texto no campo "Carga Secreta", escreva uma categoria e digite o tempo de expiração em minutos (Se deixar 0, o tempo será "infinito").  O servidor construirá os enlaces criptográficos AES de forma transparente usando envolórios de chaves, mandando para o MongoDB.
 - Qualquer pessoa na rede pode enxergar publicamente as Metadata (Timestamp, index, etc) de toda a BlockChain. No entanto, o `Payload` permanece cifrado na tela (`[ACESSO NEGADO]`) ao menos que o dono correto possua uma "Session_Key" correspondente injetada pelo KDF no login validado para desencriptar!
 
 ---
