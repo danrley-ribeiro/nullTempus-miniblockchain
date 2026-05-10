@@ -1,3 +1,14 @@
+"""
+Controlador da blockchain: criação, leitura e validação de blocos.
+
+Funções:
+- criar_bloco_genesis_se_necessario(): garante a existência do bloco 0 (gênesis) na cadeia.
+- adicionar_bloco(texto_claro, chave_sessao, nome_usuario, tipo_dado, minutos_expiracao):
+  valida a cadeia atual, cifra o conteúdo com TBK + AES-GCM e anexa o novo bloco.
+- ler_blockchain(chave_sessao, nome_usuario, validar_apenas): percorre toda a cadeia,
+  confere encadeamento de hashes e HMAC e decifra apenas os blocos do dono.
+"""
+
 from datetime import datetime, timezone
 from models.block import Bloco
 from storage.chain_store import carregar_cadeia, salvar_cadeia

@@ -73,3 +73,51 @@ O projeto segue restrições rígidas seguindo recomendações da OWASP, sem har
 * **Time-Bound Key (Criptografia Temporal):** Implementa-se uma chave efêmera transversal utilizando HKDF, que combina a `session_key` a um slot de tempo do momento da criação da transação (intervalos do TOTP). Esse mecanismo garante a propriedade de *Forward Secrecy Temporal*: mesmo em caso de comprometimento da sessão principal no futuro, o bloco restringe sua decifragem cirurgicamente à janela temporal em que foi cifrado originariamente.
 * **Impeditivo de Extensão e Manipulação (AAD GCM):** Para que um hacker não manipule um bloco "clonando" o pacote de GCM e invertendo seus donos e datas, todas as variáveis de leitura pública são acorrentadas aos bytes da variável `AAD (Authenticated Additional Data)`. Qualquer bit alterado no Documento Database fará a validação GCM da integridade despencar para "Falha" (crashing imediato da leitura pelo AES ao invés de falso-positivo).
 * **Hashes Unilaterais:** Cada instância da cadeia amarra seu encadeamento SHA3 com hash_anterior do último objeto salvo no MongoDB preenchendo as premissas da Blockchain.
+
+---
+
+## 5. Diagrama de Sequência da Aplicação
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Usuário
+    participant AUTH as auth_controller
+    participant CHAIN as blockchain_controller
+    participant CRYPTO as crypto_service
+    participant TBK as time_bound_key_service
+
+    Note over U,TBK: Login → libera chave de sessão
+    U->>AUTH: senha + código TOTP
+    AUTH->>CRYPTO: Scrypt(senha, sal) → chave_derivada
+    AUTH->>AUTH: verifica senha + TOTP
+    AUTH->>AUTH: AES Key Unwrap → chave_sessao
+    AUTH-->>U: chave_sessao (em RAM)
+
+    Note over U,TBK: Adicionar Bloco
+    U->>CHAIN: payload + chave_sessao
+    CHAIN->>CHAIN: revalida cadeia (hashes + HMAC)
+    CHAIN->>CRYPTO: HKDF(chave_sessao, tipo) → (chave_enc, chave_mac)
+    CHAIN->>TBK: HKDF(chave_enc, slot_TOTP, user) → TBK
+    CHAIN->>CRYPTO: AES-GCM(TBK, payload, AAD=metadados) → ciphertext + IV
+    CHAIN->>CHAIN: hash_anterior = hash do último bloco
+    CHAIN->>CRYPTO: SHA3-256(bloco) → hash_bloco
+    CHAIN->>CRYPTO: HMAC-SHA3-256(bloco, chave_mac) → hmac_bloco
+    CHAIN-->>U: bloco anexado à cadeia
+
+    Note over U,TBK: Ler Blockchain
+    U->>CHAIN: chave_sessao
+    loop cada bloco
+        CHAIN->>CHAIN: confere hash_anterior == hash do prévio
+        CHAIN->>CRYPTO: SHA3-256(bloco) == hash_bloco?
+        alt bloco do usuário
+            CHAIN->>CRYPTO: verifica HMAC
+            CHAIN->>TBK: HKDF(chave_enc, slot armazenado, user) → TBK
+            CHAIN->>CRYPTO: AES-GCM decrypt (valida AAD)
+            CRYPTO-->>CHAIN: payload em claro
+        else bloco de outro dono
+            CHAIN-->>CHAIN: mantém cifrado ([acesso negado])
+        end
+    end
+    CHAIN-->>U: cadeia validada (próprios decifrados)
+```

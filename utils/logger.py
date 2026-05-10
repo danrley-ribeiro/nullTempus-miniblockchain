@@ -1,3 +1,11 @@
+"""
+Logger simples de eventos de segurança em data/security.log.
+
+Funções:
+- registrar_evento(tipo_evento, nome_usuario, descricao): grava uma linha com timestamp UTC,
+  tipo (LOGIN_FAILED, TAMPERING_DETECTED, BLOCK_ADDED etc.), usuário e descrição.
+"""
+
 import os
 from datetime import datetime, timezone
 

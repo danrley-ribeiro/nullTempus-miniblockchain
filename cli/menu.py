@@ -18,7 +18,8 @@ def mostrar_menu():
     print("=" * 55)
     print("1. Cadastrar Usuário")
     print("2. Fazer Login (Senha + TOTP)")
-    print("3. Sair")
+    print("3. Explorador Público (Anônimo)")
+    print("4. Sair")
     print("=" * 55)
 
 def fluxo_registro():
@@ -52,6 +53,25 @@ def fluxo_login():
         menu_usuario(nome_usuario, sessao)
     except Exception as e:
         print(f"\n[ERRO] {e}")
+
+def fluxo_explorador_publico():
+    print("\n--- EXPLORADOR PÚBLICO (ANÔNIMO) ---")
+    print("Visualizando metadados da cadeia. Payloads permanecem cifrados.")
+    try:
+        info_cadeia = ler_blockchain(b'\x00' * 32, "anonymous_explorer")
+        for bloco in info_cadeia:
+            print("-" * 30)
+            print(f"Índice: {bloco['indice']}")
+            print(f"Proprietário: {bloco['proprietario']}")
+            print(f"Data/Hora UTC: {bloco.get('carimbo_tempo', 'N/A')}")
+            print(f"Tipo de Dado: {bloco.get('tipo_dado', 'N/A')}")
+            print(f"Hash Anterior: {bloco.get('hash_anterior', 'N/A')}")
+            print(f"Hash Atual: {bloco.get('hash_bloco', 'N/A')}")
+            print(f"Status: {bloco['status']}")
+            print(f"Dados: {bloco['dado']}")
+        print("-" * 30)
+    except Exception as e:
+        print(f"[ALERTA DE SEGURANÇA] {e}")
 
 def menu_usuario(nome_usuario: str, sessao: dict):
     from services.session_service import destruir_sessao
@@ -112,6 +132,8 @@ def main_cli():
         elif escolha == "2":
             fluxo_login()
         elif escolha == "3":
+            fluxo_explorador_publico()
+        elif escolha == "4":
             print("Saindo do sistema...")
             sys.exit(0)
         else:

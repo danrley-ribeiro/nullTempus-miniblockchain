@@ -22,9 +22,12 @@ data/
 # (Opcional) Ignore roteiros de testes isolados alheios ao core, caso não queira subir
 validate.py
 extract_pdf.py
-INE5680-20261-MiniBlockchain.pdf
 javacryptotoolsandtech-1.pdf
 /exemplos/
+
+# Documentos gerados/anexos
+*.pdf
+*.docx
 
 pdf_content.txt
 test.txt

@@ -1,3 +1,11 @@
+"""
+Modelo de Bloco da mini-blockchain.
+
+Classe:
+- Bloco: dataclass com índice, dono, timestamp, tipo de dado, expiração, payload cifrado
+  (AES-GCM), IV, AAD, slot da TBK e os hashes/HMAC de encadeamento e integridade.
+"""
+
 from dataclasses import dataclass
 
 @dataclass

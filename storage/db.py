@@ -1,3 +1,16 @@
+"""
+Camada de banco: MongoDB quando MONGO_URI estiver setada, senão fallback JSON local.
+
+Classes:
+- LocalCursor: cursor compatível com PyMongo para a collection local (suporta sort).
+- LocalCollection: emula find/update_one/upsert sobre um arquivo JSON em data/<name>.json.
+- LocalDatabase: indexador estilo db["nome"] devolvendo LocalCollection.
+
+Variáveis exportadas:
+- db: instância ativa (Mongo real ou LocalDatabase).
+- ASCENDING / DESCENDING: constantes de ordenação reaproveitadas pelos stores.
+"""
+
 import os
 import json
 

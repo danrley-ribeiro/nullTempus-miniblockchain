@@ -1,3 +1,11 @@
+"""
+Repositório de usuários (collection "users").
+
+Funções:
+- carregar_usuarios(): lê todos os documentos e devolve dict {nome_usuario: Usuario}.
+- salvar_usuarios(usuarios): upsert de cada usuário usando nome_usuario como _id.
+"""
+
 import os
 from models.user import Usuario
 from storage.db import db

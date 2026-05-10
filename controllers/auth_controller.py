@@ -1,3 +1,15 @@
+"""
+Controlador de autenticação e ciclo de vida do usuário.
+
+Funções:
+- verificar_bloqueio(usuario): levanta erro se a conta ainda está dentro do período de bloqueio.
+- registrar_tentativa_falha(usuario): incrementa o contador e bloqueia a conta após N falhas.
+- registrar_usuario(nome_usuario, senha): cria conta nova, gera sal, deriva a chave Scrypt,
+  cria o segredo TOTP cifrado e envelopa uma chave mestre aleatória.
+- logar_usuario(nome_usuario, senha, codigo_totp): valida senha + TOTP, desenvelopa a chave
+  mestre e devolve a sessão pronta para uso.
+"""
+
 from datetime import datetime, timezone, timedelta
 from models.user import Usuario
 from storage.user_store import carregar_usuarios, salvar_usuarios

@@ -1,3 +1,16 @@
+"""
+Serviço TOTP (RFC-6238) e proteção do segredo TOTP em repouso.
+
+Funções:
+- gerar_segredo_totp(): cria um segredo Base32 aleatório.
+- obter_uri_totp(segredo, nome_usuario, nome_emissor): monta a URI otpauth:// padrão.
+- gerar_qr_code(uri, nome_arquivo): salva a URI como imagem PNG.
+- imprimir_qr_code_no_console(uri): renderiza o QR Code em ASCII no terminal.
+- verificar_totp(segredo, codigo): valida o código de 6 dígitos contra o slot atual.
+- cifrar_segredo_totp(segredo, chave_derivada) / decifrar_segredo_totp(...): protege o
+  segredo TOTP em repouso usando AES-GCM com a chave derivada da senha.
+"""
+
 import pyotp
 import qrcode
 import base64

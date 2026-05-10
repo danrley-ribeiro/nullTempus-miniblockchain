@@ -1,3 +1,14 @@
+"""
+Serviço de sessão e envelopamento da chave mestre (Double-Wrap).
+
+Funções:
+- gerar_e_envelopar_chave_mestre(chave_derivada): cria uma chave mestre aleatória de 32 B
+  e a envelopa com a chave derivada da senha (AES Key Wrap).
+- desenvelopar_chave_mestre(chave_derivada, hex_envelopado): desfaz o envelope no login.
+- criar_sessao(chave_mestre): empacota a chave de sessão a ser usada nas operações.
+- destruir_sessao(sessao): zera bytearrays sensíveis e limpa o dicionário da sessão.
+"""
+
 import os
 from cryptography.hazmat.primitives.keywrap import aes_key_wrap, aes_key_unwrap
 from cryptography.hazmat.backends import default_backend

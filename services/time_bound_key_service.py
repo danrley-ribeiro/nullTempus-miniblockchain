@@ -1,3 +1,17 @@
+"""
+Serviço Time-Bound Key (TBK): chave AES atrelada a um slot de tempo do TOTP.
+
+Funções:
+- _slot_atual(janela): slot inteiro correspondente ao instante presente.
+- slot_por_timestamp(iso_timestamp, janela): converte um timestamp ISO em slot.
+- derivar_tbk(chave_sessao, slot, nome_usuario, janela): HKDF-SHA3-256 que mistura sessão,
+  username (sal) e slot para gerar a TBK de 32 bytes.
+- obter_tbk_para_cifra(chave_sessao, nome_usuario): TBK + slot do momento da cifragem.
+- obter_tbk_para_decifra(chave_sessao, nome_usuario, carimbo_tempo_bloco): TBK reconstruída
+  para o slot exato registrado no bloco.
+- obter_candidatos_tbk(...): janela de tolerância (±N slots) para lidar com drift.
+"""
+
 import time
 import math
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF

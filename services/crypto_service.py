@@ -1,3 +1,23 @@
+"""
+Serviço criptográfico central: KDF, AEAD, hashes e HMAC.
+
+Funções:
+- derivar_chave(senha, sal): aplica Scrypt e devolve 32 bytes de chave.
+- verificar_senha(senha_entrada, sal, verificador_armazenado): compara em tempo constante
+  a chave derivada com o verificador salvo.
+- construir_aad(indice, proprietario, carimbo_tempo, tipo_dado, expira_em): serializa os
+  metadados públicos do bloco para uso como AAD do AES-GCM.
+- computar_hmac_bloco(dict_bloco, chave_hmac) / verificar_hmac_bloco(...): HMAC-SHA3-256
+  para integridade adicional do bloco.
+- computar_hash_bloco(dict_bloco): hash SHA3-256 do bloco para encadeamento.
+- derivar_subchaves(chave_sessao, tipo_dado): HKDF-SHA3-256 que gera (chave_enc, chave_mac)
+  separadas por tipo de dado.
+- cifrar_bloco_com_tbk(...): cifra o payload com TBK + AES-GCM e devolve ciphertext, IV,
+  AAD, slot e chave MAC.
+- decifrar_bloco_com_tbk(bloco, chave_sessao, nome_usuario): valida expiração, deriva a TBK
+  do slot armazenado e decifra; tolera deslocamento de slot via candidatos.
+"""
+
 import os
 import json
 import base64

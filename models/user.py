@@ -1,3 +1,11 @@
+"""
+Modelo de Usuário persistido no banco.
+
+Classe:
+- Usuario: dataclass com sal, verificador de senha (Scrypt), segredo TOTP cifrado,
+  controle de tentativas/bloqueio e a chave mestre envelopada (AES Key Wrap).
+"""
+
 from dataclasses import dataclass
 
 @dataclass

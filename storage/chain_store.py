@@ -1,3 +1,11 @@
+"""
+Repositório da blockchain (collection "blockchain").
+
+Funções:
+- carregar_cadeia(): lê todos os blocos ordenados por índice e devolve lista de Bloco.
+- salvar_cadeia(cadeia): faz upsert de cada bloco usando o índice como _id.
+"""
+
 import os
 from models.block import Bloco
 from storage.db import db, ASCENDING
