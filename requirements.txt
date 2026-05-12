@@ -1,10 +1,15 @@
-cryptography>=42.0.0
-pyotp>=2.9.0
-qrcode>=7.4.2
-argon2-cffi>=23.1.0
-pillow>=10.0.0
-flask>=3.0.0
-flask-cors>=4.0.0
-waitress>=3.0.0
-pymongo[srv]>=4.6.0
-python-dotenv>=1.0.1
+#criptografia
+cryptography>=42.0.0      # Primitivas criptográficas (AES-GCM, RSA, hashes)
+pyotp>=2.9.0              # Geração e verificação de códigos TOTP (2FA)
+argon2-cffi>=23.1.0       # Hash de senhas com Argon2 (KDF resistente a GPU)
+
+#Qrcode + imagem
+qrcode>=7.4.2             # Geração de QR Codes para provisionamento do TOTP
+pillow>=10.0.0            # Manipulação de imagens (suporte ao qrcode)
+
+#Para Web+ mongo
+flask>=3.0.0              # Framework web para a API/servidor HTTP
+flask-cors>=4.0.0         # Habilita CORS nas rotas Flask
+waitress>=3.0.0           # Servidor WSGI de produção para servir o Flask
+pymongo[srv]>=4.6.0       # Driver MongoDB com suporte a URIs SRV (Atlas)
+python-dotenv>=1.0.1      # Carrega variáveis de ambiente a partir do arquivo .env

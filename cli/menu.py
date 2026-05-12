@@ -2,7 +2,7 @@ import os
 import sys
 from cli.prompts import prompt_string, prompt_password
 from controllers.auth_controller import registrar_usuario, logar_usuario
-from controllers.blockchain_controller import adicionar_bloco, ler_blockchain
+from controllers.blockchain_controller import ler_blockchain
 from services.totp_service import obter_uri_totp, gerar_qr_code, imprimir_qr_code_no_console
 
 def limpar_tela():
