@@ -49,7 +49,7 @@ def registrar_usuario(nome_usuario: str, senha: str) -> str:
     chave_derivada = derivar_chave(senha, sal)
     
     segredo_totp = gerar_segredo_totp()
-    chave_totp_cifrada, iv_totp = cifrar_segredo_totp(segredo_totp, chave_derivada)
+    chave_totp_cifrada = cifrar_segredo_totp(segredo_totp, chave_derivada)
     
     chave_mestre, hex_chave_mestre_envelopada = gerar_e_envelopar_chave_mestre(chave_derivada)
     
@@ -58,7 +58,6 @@ def registrar_usuario(nome_usuario: str, senha: str) -> str:
         sal=sal.hex(),
         verificador_senha=chave_derivada.hex(),
         chave_totp_cifrada=chave_totp_cifrada,
-        iv_totp=iv_totp,
         tentativas_falhas=0,
         bloqueado_ate="",
         chave_mestre_enc=hex_chave_mestre_envelopada
@@ -88,7 +87,7 @@ def logar_usuario(nome_usuario: str, senha: str, codigo_totp: str) -> dict:
         registrar_evento("LOGIN_FAILED", nome_usuario, "Senha incorreta.")
         raise ValueError("Credenciais inválidas.")
 
-    segredo_totp = decifrar_segredo_totp(usuario.chave_totp_cifrada, usuario.iv_totp, chave_derivada)
+    segredo_totp = decifrar_segredo_totp(usuario.chave_totp_cifrada, chave_derivada)
     if not verificar_totp(segredo_totp, codigo_totp):
         registrar_tentativa_falha(usuario)
         salvar_usuarios(usuarios)

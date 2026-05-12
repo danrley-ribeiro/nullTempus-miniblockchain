@@ -8,15 +8,19 @@ Funções:
 - imprimir_qr_code_no_console(uri): renderiza o QR Code em ASCII no terminal.
 - verificar_totp(segredo, codigo): valida o código de 6 dígitos contra o slot atual.
 - cifrar_segredo_totp(segredo, chave_derivada) / decifrar_segredo_totp(...): protege o
-  segredo TOTP em repouso usando AES-GCM com a chave derivada da senha.
+  segredo TOTP em repouso usando AES-GCM com a chave derivada da senha. O IV é
+  derivado deterministicamente da própria chave via HKDF-SHA3-256, evitando armazenar
+  um nonce separado (seguro aqui porque cada usuário tem sal único → chave única e
+  apenas um segredo TOTP é cifrado por chave).
 """
 
 import pyotp
 import qrcode
 import base64
-import os
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from typing import Tuple
+from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.backends import default_backend
 
 def gerar_segredo_totp() -> str:
     return pyotp.random_base32()
@@ -40,14 +44,23 @@ def verificar_totp(segredo: str, codigo: str) -> bool:
     totp = pyotp.TOTP(segredo)
     return totp.verify(codigo)
 
-def cifrar_segredo_totp(segredo: str, chave_derivada: bytes) -> Tuple[str, str]:
-    aesgcm = AESGCM(chave_derivada)
-    iv = os.urandom(12)
-    texto_cifrado = aesgcm.encrypt(iv, segredo.encode('utf-8'), None)
-    return base64.b64encode(texto_cifrado).decode('utf-8'), iv.hex()
+def _derivar_iv_totp(chave_derivada: bytes) -> bytes:
+    return HKDF(
+        algorithm=hashes.SHA3_256(),
+        length=12,
+        salt=None,
+        info=b"null-tempus-totp-iv",
+        backend=default_backend(),
+    ).derive(chave_derivada)
 
-def decifrar_segredo_totp(segredo_cifrado: str, iv_hex: str, chave_derivada: bytes) -> str:
+def cifrar_segredo_totp(segredo: str, chave_derivada: bytes) -> str:
     aesgcm = AESGCM(chave_derivada)
-    iv = bytes.fromhex(iv_hex)
+    iv = _derivar_iv_totp(chave_derivada)
+    texto_cifrado = aesgcm.encrypt(iv, segredo.encode('utf-8'), None)
+    return base64.b64encode(texto_cifrado).decode('utf-8')
+
+def decifrar_segredo_totp(segredo_cifrado: str, chave_derivada: bytes) -> str:
+    aesgcm = AESGCM(chave_derivada)
+    iv = _derivar_iv_totp(chave_derivada)
     texto_cifrado = base64.b64decode(segredo_cifrado)
     return aesgcm.decrypt(iv, texto_cifrado, None).decode('utf-8')

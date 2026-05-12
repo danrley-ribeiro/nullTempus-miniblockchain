@@ -7,11 +7,14 @@ Funções:
 """
 
 import os
+from dataclasses import fields
 from models.user import Usuario
 from storage.db import db
 
 # Conexão com a collection de usuarios no Mongo
 users_col = db["users"]
+
+_CAMPOS_USUARIO = {f.name for f in fields(Usuario)}
 
 def carregar_usuarios() -> dict[str, Usuario]:
     usuarios_dict = {}
@@ -23,10 +26,9 @@ def carregar_usuarios() -> dict[str, Usuario]:
         # Pega a chave principal que inserimos manualmente
         nome_usuario = doc.get("_id")
         
-        # Removemos o _id para não conflitar com a desestruturação do modelo Usuario
-        dados_usuario = {k: v for k, v in doc.items() if k != "_id"}
-        
-        # O modelo já tem um atributo username, garantindo as devidas passagens
+        # Removemos o _id e ignoramos campos legados que não fazem mais parte do modelo
+        dados_usuario = {k: v for k, v in doc.items() if k != "_id" and k in _CAMPOS_USUARIO}
+
         usuarios_dict[nome_usuario] = Usuario(**dados_usuario)
 
     return usuarios_dict
